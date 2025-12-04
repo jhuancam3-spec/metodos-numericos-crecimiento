@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DESAFÍO DEL PEZ Y CRECIMIENTO DE UN ORGANISMO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #2c041c 0%, #5a1e3d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #f0e6d2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: rgba(26, 4, 19, 0.9);
+            border-radius: 25px;
+            box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(122, 28, 75, 0.3);
+            padding: 40px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 25px;
+            border-bottom: 2px solid rgba(122, 28, 75, 0.5);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffd6e7, #ff9ec0, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            color: #d4c4b8;
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+        
+        .curso {
+            font-size: 1.2rem;
+            color: #ff9ec0;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .student-box {
+            background: rgba(122, 28, 75, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            border: 1px solid rgba(255, 158, 192, 0.3);
+            margin-top: 15px;
+        }
+        
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+        
+        .student-info p {
+            font-size: 1.1rem;
+            margin: 0;
+            color: #f0e6d2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .student-info p i {
+            color: #ff6b9d;
+            width: 20px;
+        }
+        
+        /* CONTENIDO PRINCIPAL - DOS COLUMNAS */
+        .content-main {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        @media (min-width: 900px) {
+            .content-main {
+                flex-wrap: nowrap;
+            }
+        }
+        
+        /* TARJETAS DE ARCHIVOS */
+        .file-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 500px;
+            background: linear-gradient(145deg, rgba(50, 15, 35, 0.9), rgba(70, 20, 45, 0.95));
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: #f0e6d2;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid rgba(122, 28, 75, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .file-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e74c3c, #7a1c4b, #27ae60);
+        }
+        
+        .file-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 25px 60px rgba(122, 28, 75, 0.4);
+            border-color: #ff6b9d;
+        }
+        
+        .file-icon {
+            font-size: 4rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .pdf-card .file-icon {
+            color: #e74c3c;
+        }
+        
+        .excel-card .file-icon {
+            color: #27ae60;
+        }
+        
+        .file-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #ffd6e7;
+            text-align: center;
+        }
+        
+        .file-desc {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #d4c4b8;
+            margin-bottom: 30px;
+            text-align: center;
+            flex-grow: 1;
+        }
+        
+        .btn-download {
+            display: block;
+            width: 100%;
+            background: linear-gradient(90deg, #7a1c4b, #a82a6c);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            box-shadow: 0 8px 25px rgba(122, 28, 75, 0.4);
+        }
+        
+        .file-card:hover .btn-download {
+            background: linear-gradient(90deg, #a82a6c, #e74c3c);
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(122, 28, 75, 0.5);
+        }
+        
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffd6e7;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            border: 2px solid rgba(122, 28, 75, 0.5);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .github-link:hover {
+            background: rgba(122, 28, 75, 0.3);
+            border-color: #ff6b9d;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(122, 28, 75, 0.3);
+        }
+        
+        .update-info {
+            margin-top: 25px;
+            color: #b8a9a9;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid rgba(122, 28, 75, 0.3);
+        }
+        
+        .update-info p {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .curso {
+                font-size: 1.1rem;
+            }
+            
+            .file-card {
+                min-width: 100%;
+            }
+            
+            .content-main {
+                gap: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .file-card {
+                padding: 25px;
+            }
+        }
+        
+        /* ANIMACIONES */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 class="fade-in">DESAFÍO DEL PEZ Y CRECIMIENTO DE UN ORGANISMO</h1>
+            <p class="subtitle fade-in delay-1"><i> Métodos Numéricos</i></p>
+            
+            <div class="student-box fade-in delay-2">
+                <div class="student-info">
+                    <p><i class="fas fa-user-graduate"></i> <strong>Estudiante:</strong> Jaquelin Aracely Huanca Mamani</p>
+                    <p><i class="fas fa-id-card"></i> <strong>CI:</strong> 9975218</p>
+                </div>
+            </div>
+        </header>
+        
+        <!-- CONTENIDO PRINCIPAL - PDF Y EXCEL JUNTOS -->
+        <div class="content-main">
+            <!-- TARJETA PDF -->
+            <a href="PezYCrecimiento.pdf" class="file-card pdf-card fade-in delay-1" download>
+                <div class="file-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h2 class="file-title">Informe Completo</h2>
+                <p class="file-desc">
+                    Documento PDF con análisis completo del crecimiento del pez (modelo von Bertalanffy) 
+                    y organismo generalizado. Incluye solución exacta, métodos Euler y Heun, 
+                    tablas comparativas y conclusiones.
+                </p>
+                <div class="btn-download">
+                    <i class="fas fa-download"></i> Descargar PDF
+                </div>
+            </a>
+            
+            <!-- TARJETA EXCEL -->
+            <a href="CRECIMIENTOYPEZ.xlsx" class="file-card excel-card fade-in delay-2" download>
+                <div class="file-icon">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+                <h2 class="file-title">Archivo de Cálculos</h2>
+                <p class="file-desc">
+                    Hoja de cálculo Excel con implementación completa de métodos numéricos: 
+                    Euler, Heun, solución exacta y RK4. Incluye fórmulas, gráficos dinámicos 
+                    y análisis de errores.
+                </p>
+                <div class="btn-download">
+                    <i class="fas fa-download"></i> Descargar Excel
+                </div>
+            </a>
+        </div>
+        
+        <!-- FOOTER -->
+        <footer>
+            <a href="https://github.com/jhuancam3-spec/metodos-numericos-crecimiento" class="github-link" target="_blank">
+                <i class="fab fa-github"></i> Ver Repositorio en GitHub
+            </a>
+            
+            <div class="update-info">
+                <p><i class="fas fa-sync-alt"></i> Actualizado: <span id="update-time"></span></p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        // Actualizar fecha y hora
+        function updateDateTime() {
+            const now = new Date();
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            
+            document.getElementById('update-time').textContent = 
+                now.toLocaleDateString('es-ES', options);
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+        
+        // Efectos de animación al cargar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animar elementos con retraso
+            const animatedElements = document.querySelectorAll('.fade-in');
+            animatedElements.forEach(el => {
+                const delay = el.classList.contains('delay-1') ? 200 : 
+                             el.classList.contains('delay-2') ? 400 : 0;
+                
+                setTimeout(() => {
+                    el.style.animationPlayState = 'running';
+                }, delay);
+            });
+            
+            // Efecto al pasar sobre las tarjetas
+            const fileCards = document.querySelectorAll('.file-card');
+            fileCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.zIndex = '10';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.zIndex = '1';
+                });
+            });
+            
+            // Confirmación de descarga
+            document.querySelectorAll('.file-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const fileName = this.querySelector('.file-title').textContent;
+                    console.log(`Descargando: ${fileName}`);
+                    
+                    // Efecto visual
+                    const originalTransform = this.style.transform;
+                    this.style.transform = originalTransform + ' scale(0.98)';
+                    
+                    setTimeout(() => {
+                        this.style.transform = originalTransform;
+                    }, 300);
+                });
+            });
+            
+            // Actualizar enlace de GitHub si es necesario
+            const currentUrl = window.location.href;
+            const githubLink = document.querySelector('.github-link');
+            
+            if (!currentUrl.includes('github.io')) {
+                githubLink.href = 'https://github.com/jhuancam3-spec/metodos-numericos-crecimiento';
+            }
+        });
+        
+        // Efecto de ripple en botones
+        document.querySelectorAll('.btn-download').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                // Crear efecto ripple
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 255, 255, 0.6);
+                    width: ${size}px;
+                    height: ${size}px;
+                    top: ${y}px;
+                    left: ${x}px;
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // Añadir estilo para ripple
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
